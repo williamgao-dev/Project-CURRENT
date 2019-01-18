@@ -1,0 +1,52 @@
+﻿<UserControl x:Class="Bengi.PopupControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Bengi"
+             xmlns:core="clr-namespace:Bengi.Core;assembly=Bengi.Core"
+             xmlns:Bengi="clr-namespace:Bengi"
+             mc:Ignorable="d" 
+             d:DesignHeight="100" d:DesignWidth="100"
+             d:DataContext="{x:Static core:BasePopupDesignViewModel.Instance}">
+
+    <Border UseLayoutRounding="True"
+            SnapsToDevicePixels="True">
+
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="4"
+                                      ShadowDepth="2">
+            </DropShadowEffect>
+        </Border.Effect>
+
+        <!-- Chat message container -->
+        <Grid>
+
+            <!-- Row definitions -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+
+
+            <Border 
+                           Grid.Row="0"
+                           CornerRadius="10"
+                           Padding="5"
+                           Background="{Binding BubbleBackgroundRGB, Converter={local:StringRGBToColorBrushConverter}}">
+
+                <!-- The content of this popup control -->
+                <ContentControl Content="{Binding Content, Converter={local:PopupContentConverter}}"></ContentControl>
+            </Border>
+
+            <!-- Pointer triangle -->
+            <Path HorizontalAlignment="{Binding ArrowAlignment, Converter={local:HorizontalAlignmentConverter}}" 
+                  Margin="10 -1 10 0" Grid.Row="1" 
+                  Fill="{Binding BubbleBackgroundRGB, Converter={local:StringRGBToColorBrushConverter}}" 
+                  Panel.ZIndex="1"
+                  Data="M 0,0 L 10 10 L 20 0 L 0 0"></Path>
+
+        </Grid>
+    </Border>
+
+</UserControl>
