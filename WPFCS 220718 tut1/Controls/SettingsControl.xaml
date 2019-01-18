@@ -1,0 +1,107 @@
+﻿<UserControl x:Class="Project.SettingsControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Project"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Border Background="White"
+            Padding="5">
+        <Grid>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <!-- 
+                SETTINGS HEADER
+            -->
+            <Grid Height="50"
+                  Margin="20"
+                  Grid.Row="0">
+
+                <!-- Left arrow button -->
+                <Button Style="{StaticResource IconGrowButton}"
+                        Content="{StaticResource ArrowIcon}"
+                        FontSize="{StaticResource FontSizeRegular}"
+                        Foreground="Gray"
+                        Command="{Binding CloseCommand}"
+                        HorizontalAlignment="Left">
+                </Button>
+
+                <!-- Settings text -->
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Center">
+                    <!-- Cog -->
+                    <TextBlock
+                              Text="{StaticResource CogIcon}"
+                              Width="50"
+                              FontFamily="{StaticResource FontAwesome}"
+                              Foreground="{StaticResource WordOrangeBrush}"
+                              FontSize="{StaticResource FontSizeLarge}"
+                              VerticalAlignment="Center"
+                              Margin="0 0 -15 3">
+                    </TextBlock>
+                    <!-- Settings header text -->
+                    <TextBlock Text="Settings"
+                               Margin="0 7 0 0"
+                               FontSize="{StaticResource FontSizeXXRegular}"
+                               Foreground="{StaticResource ForegroundVeryDarkBrush}"></TextBlock>
+                </StackPanel>
+            </Grid>
+
+
+            <!-- 
+                BODY 
+            -->
+
+            <Grid Grid.Row="1"
+                  HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <!-- Picture -->
+                    <ColumnDefinition ></ColumnDefinition>
+                    <!-- Options -->
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+
+                <!-- Profile Picture -->
+                <Rectangle Margin="0 0 0 0"
+                           Width="250"
+                           VerticalAlignment="Top"
+                           Height="250"
+                           RadiusX="20"
+                           RadiusY="20"
+                           Grid.Column="0">
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource="C:\Users\William\source\repos\1111PROJECT\Dev\Project CURRENT\WPFCS 220718 tut1\Resources\Image\pug.jpg"></ImageBrush>
+                    </Rectangle.Fill>
+                    
+                </Rectangle>
+
+                <!-- Inputs -->
+                <Grid Grid.Column="1"
+                      Margin="30 10 0 0">
+                    <StackPanel>
+                        <!-- Name-->
+                        <local:PasswordEntryControl DataContext="{Binding Name}"
+                                                Margin="0 0 0 15"></local:PasswordEntryControl>
+                        <!-- User name-->
+                        <local:PasswordEntryControl DataContext="{Binding Username}"
+                                                Margin="0 0 0 15"></local:PasswordEntryControl>
+                        <!-- Password -->
+                        <local:PasswordEntryControl DataContext="{Binding Password}"
+                                                Margin="0 0 0 15"></local:PasswordEntryControl>
+                        <!-- Email -->
+                        <local:PasswordEntryControl DataContext="{Binding Email}"
+                                                Margin="0 0 0 15"></local:PasswordEntryControl>
+                    </StackPanel>
+                </Grid>
+
+            </Grid>
+
+        </Grid>
+    </Border>
+</UserControl>

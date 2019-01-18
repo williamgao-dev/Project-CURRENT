@@ -1,0 +1,155 @@
+﻿<Window x:Class="Project.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Project"
+        xmlns:core="clr-namespace:Project;assembly=Project.Core"
+        mc:Ignorable="d"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        WindowStartupLocation="CenterScreen"
+        Activated="MainWindow_Activated"
+        Deactivated="MainWindow_Deactivated"
+        MinWidth="800"
+        MinHeight="500"
+        Height="650"
+        Icon="Resources/Logo/logo-small.png"
+        Title="This is the title">
+
+    <Window.Resources>
+        <!-- Styling main window -->
+        <Style TargetType="{x:Type local:MainWindow}">
+            <!-- Entering template.. -->
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Window}">
+                        <!-- Main Window -->
+                        <Border Margin="10">
+                            <Grid>
+                                <!-- The main window content -->
+                                <Grid>
+
+                                    <Grid.RowDefinitions>
+                                        <!-- Space for the title bar -->
+                                        <RowDefinition Height="30" />
+                                        <!-- Space for main window content -->
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+
+
+                                    <Grid Grid.Row="0"
+                                      Background="{StaticResource HeaderGrayBrush}">
+                                        <Grid.ColumnDefinitions>
+                                            <!-- Title -->
+                                            <ColumnDefinition Width="Auto" />
+                                            <!-- Windows Buttons -->
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <!-- Bengi Logo -->
+                                        <Viewbox Grid.Column="0" 
+                                                 Grid.ColumnSpan="3" 
+                                                 HorizontalAlignment="Left"
+                                                 Margin="10 5 5 7">
+                                            <StackPanel Orientation="Vertical">
+                                                <TextBlock FontFamily="{StaticResource LatoBold}"
+                                                       FontSize="{StaticResource FontSizeRegular}" Margin="0 0 0 -3">
+                                                <Run Text="B" Foreground="{StaticResource WordOrangeBrush}" /><Run Text="E" Foreground="{StaticResource WordBlueBrush}" /><Run Text="N" Foreground="{StaticResource WordRedBrush}" /><Run Text="G" Foreground="{StaticResource WordGreenBrush}" /><Run Text="I" Foreground="{StaticResource WordBlueBrush}" />
+                                                </TextBlock>
+               
+                                            </StackPanel>
+                                        </Viewbox>
+
+                                        <!-- Window Buttons -->
+                                        <StackPanel Grid.Column="2" Orientation="Horizontal"
+                                                    HorizontalAlignment="Right">
+                                            <Button Style="{StaticResource WindowControlButton}" 
+                                                    Width="27"
+                                                    Content="_"
+                                                    Command="{Binding MinimiseCommand}" />
+                                            <Button Style="{StaticResource WindowControlButton}" 
+                                                    Width="27"
+                                                    Content="[ ]"
+                                                    Command="{Binding MaximiseCommand}" />
+                                            <Button Style="{StaticResource WindowCloseButton}" 
+                                                    Width="27"
+                                                    Content="X"
+                                                    Command="{Binding CloseCommand}" />
+                                        </StackPanel>
+
+                                    </Grid>
+
+                                    <!-- Page Content -->
+                                    <Border ClipToBounds="True" Grid.Row="1">
+                                        <ContentPresenter Content="{TemplateBinding Content}" />
+                                    </Border>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome
+            CaptionHeight="{Binding TitleHeight}"
+            GlassFrameThickness="0"
+            CornerRadius="10" />
+    </WindowChrome.WindowChrome>
+
+    <!--
+        MAIN WINDOW CONTENT
+    -->
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <local:SettingsControl Grid.ColumnSpan="2"
+                               Panel.ZIndex="11"
+                               local:AnimateSlideInFromBottomProperty.Value="{Binding ApplicationViewModel.SettingsMenuVisible, Source={x:Static core:ViewModelLocator.Instance}}">
+        </local:SettingsControl>
+
+        <!-- 
+            SIDE MENU
+        -->
+
+        <local:SideMenuControl Grid.Column="0"
+                               Width="305"
+                               local:AnimateSlideInFromLeftProperty.Value="{Binding ApplicationViewModel.SideMenuVisible, Source={x:Static core:ViewModelLocator.Instance}}">
+            <local:ChatListControl HorizontalAlignment="Left"></local:ChatListControl>
+        </local:SideMenuControl>
+
+        <!-- 
+            CURRENT PAGE
+        -->
+
+        <Border Grid.Column="1">
+            <Frame x:Name="frame" 
+                   MinWidth="500"
+                   local:NoFrameHistoryAttachedProperty.Value="True"
+                   Background="{StaticResource LightBrush}"
+                   Content="{Binding ApplicationViewModel.CurrentPage, 
+                             Source={x:Static core:ViewModelLocator.Instance}, 
+                             Converter={local:ApplicationPageValueConverter}}"></Frame>
+        </Border>
+        
+        <!--
+        <local:PageHost Grid.Column="1" 
+                        Background="{StaticResource LightBrush}"
+                        x:Name="MainFrame" 
+                        DataContext="{Binding ApplicationViewModel.CurrentPage, 
+                        Source={x:Static core:ViewModelLocator.Instance}, 
+                        Converter={local:ApplicationPageValueConverter}}"
+                        CurrentPage="{Binding}">
+        </local:PageHost>
+        -->
+
+
+    </Grid>
+</Window>

@@ -1,0 +1,710 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Project">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Colours.xaml" />
+        <ResourceDictionary Source="Fonts.xaml" />
+        <ResourceDictionary Source="Text.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+
+    <!-- Hoverless button -->
+    <Style TargetType="{x:Type Button}" x:Key="Hoverless">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}">
+                        <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- System button -->
+    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource Hoverless}" x:Key="SystemIconButton">
+        <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
+        <Setter Property="Padding" Value="10" />
+    </Style>
+
+    <!-- Window Control Button-->
+    <Style TargetType="{x:Type Button}" x:Key="WindowControlButton" BasedOn="{StaticResource BaseStyle}">
+        <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="DarkGray"/>
+        <Setter Property="LayoutTransform">
+            <Setter.Value>
+                <ScaleTransform ScaleX="1.35" ScaleY="1" />
+            </Setter.Value>
+        </Setter>
+ 
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Padding="{TemplateBinding Padding}" 
+                            Background="{TemplateBinding Background}">
+                        <TextBlock Text="{TemplateBinding Content}" 
+                                   FontFamily="{StaticResource LatoRegular}"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center" />
+                    </Border>
+
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Background" Value="{StaticResource ForegroundDarkBrush}" />
+                        </Trigger>
+
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="DarkGray"></Setter>
+                            <Setter Property="Foreground" Value="White"></Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+
+                </ControlTemplate>
+
+
+            </Setter.Value>
+        </Setter>
+
+    </Style>
+
+    <!-- Window Close Button -->
+    <Style TargetType="{x:Type Button}" x:Key="WindowCloseButton" BasedOn="{StaticResource WindowControlButton}">
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="Red" />
+                <Setter Property="Foreground" Value="White"></Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Window Close Foreground Button -->
+    <Style TargetType="{x:Type Button}" x:Key="WindowForegroundCloseButton" BasedOn="{StaticResource WindowControlButton}">
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Foreground" Value="Red" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Regular button -->
+    <Style x:Key="RegularButton" TargetType="{x:Type Button}" BasedOn="{StaticResource BaseStyle}">
+        <Setter Property="Foreground" Value="{StaticResource WhiteColorBrush}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeLarge}" />
+        <Setter Property="Margin" Value="0 10" />
+
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ButtonBase}">
+                    <Border x:Name="border"
+                            CornerRadius="10"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Background="{TemplateBinding Background}"
+                            SnapsToDevicePixels="True">
+
+                        <Grid>
+                            <TextBlock Text="{TemplateBinding Content}"
+                                   Focusable="False"
+                                   FontFamily="{TemplateBinding FontFamily}"
+                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                   Margin="{TemplateBinding Padding}"
+                                   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                   Visibility="{TemplateBinding local:IsBusyProperty.Value, Converter={local:BooleanToVisibilityHiddenConverter}}"/>
+
+                            <TextBlock
+                                Visibility="{TemplateBinding local:IsBusyProperty.Value, 
+                                Converter={local:BooleanToVisibilityHiddenConverter}, 
+                                ConverterParameter=Reverse}"
+                                Text="&#xf110;" 
+                                       Style="{StaticResource SpinningText}">
+
+                                <TextBlock.RenderTransform>
+                                    <RotateTransform></RotateTransform>
+                                </TextBlock.RenderTransform>
+
+                            </TextBlock>
+
+
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <EventTrigger RoutedEvent="MouseEnter">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation To="{StaticResource WordBlue}" Duration="0:0:0.3" Storyboard.TargetName="border" Storyboard.TargetProperty="Background.Color" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="MouseLeave">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation From="{StaticResource WordBlue}" Duration="0:0:0.3" Storyboard.TargetName="border" Storyboard.TargetProperty="Background.Color" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Background" TargetName="border" Value="{StaticResource ForegroundDarkBrush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Send button for ChatPage -->
+    <Style x:Key="SendButton" TargetType="{x:Type Button}" BasedOn="{StaticResource BaseStyle}">
+        <Setter Property="Foreground" Value="{StaticResource WhiteColorBrush}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeLarge}" />
+        <Setter Property="Padding" Value="50 10" />
+        <Setter Property="Margin" Value="0 10" />
+
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ButtonBase}">
+                    <Border x:Name="border"
+                            CornerRadius="10"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            SnapsToDevicePixels="True">
+
+                        <Grid>
+                            <TextBlock Text="{TemplateBinding Content}"
+                                   Focusable="False"
+                                   FontFamily="{TemplateBinding FontFamily}"
+                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                   Margin="{TemplateBinding Padding}"
+                                   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                   Visibility="{TemplateBinding local:IsBusyProperty.Value, Converter={local:BooleanToVisibilityHiddenConverter}}"/>
+
+                            <TextBlock
+                                Visibility="{TemplateBinding local:IsBusyProperty.Value, 
+                                Converter={local:BooleanToVisibilityHiddenConverter}, 
+                                ConverterParameter=Reverse}"
+                                Text="&#xf110;" 
+                                       Style="{StaticResource SpinningText}">
+
+                                <TextBlock.RenderTransform>
+                                    <RotateTransform></RotateTransform>
+                                </TextBlock.RenderTransform>
+
+                            </TextBlock>
+
+
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <EventTrigger RoutedEvent="MouseEnter">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation To="{StaticResource WordBlue}"
+                                                    Duration="0:0:0.2"
+                                                    Storyboard.TargetName="border"
+                                                    Storyboard.TargetProperty="Background.Color" />
+                                </Storyboard>
+
+                            </BeginStoryboard>
+                        </EventTrigger>
+
+                        <EventTrigger RoutedEvent="MouseLeave">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation To="{StaticResource WordGreen}"
+                                                    Duration="0:0:0.2"
+                                                    Storyboard.TargetName="border"
+                                                    Storyboard.TargetProperty="Background.Color" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Background" Value="{StaticResource ForegroundDarkBrush}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Text button -->
+    <Style x:Key="TextButton" TargetType="{x:Type Button}" BasedOn="{StaticResource BaseStyle}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{StaticResource WhiteColorBrush}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="FontFamily" Value="{StaticResource LatoRegular}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeLarge}" />
+        <Setter Property="Padding" Value="50 10 50 10" />
+        <Setter Property="Margin" Value="0 10" />
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ButtonBase}">
+                    <Border x:Name="border" CornerRadius="10"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Background="{TemplateBinding Background}"
+                            SnapsToDevicePixels="True">
+                        <TextBlock
+                            x:Name="text"
+                            Text="{TemplateBinding Content}"
+                            Focusable="False"
+                            IsEnabled="False"
+                            FontFamily="{TemplateBinding FontFamily}"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            Margin="{TemplateBinding Padding}"
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsEnabled" Value="False">
+                                            <Setter Property="Foreground" Value="White"></Setter>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <EventTrigger RoutedEvent="MouseEnter">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation To="{StaticResource WordOrange}"
+                                                    Duration="0:0:0.2"
+                                                    Storyboard.TargetName="text"
+                                                    Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+
+                        <EventTrigger RoutedEvent="MouseLeave">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation To="White"
+                                                    Duration="0:0:0.2"
+                                                    Storyboard.TargetName="text"
+                                                    Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Disabled text button -->
+    <Style x:Key="DisabledTextButton" TargetType="{x:Type Button}" BasedOn="{StaticResource BaseStyle}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{StaticResource WhiteColorBrush}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="FontFamily" Value="{StaticResource LatoRegular}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeLarge}" />
+        <Setter Property="Padding" Value="50 10 50 10" />
+        <Setter Property="Margin" Value="0 10" />
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ButtonBase}">
+                    <Border x:Name="border" CornerRadius="10"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Background="{TemplateBinding Background}"
+                            SnapsToDevicePixels="True">
+                        <TextBlock
+                            x:Name="text"
+                            Text="{TemplateBinding Content}"
+                            Focusable="False"
+                            IsEnabled="False"
+                            FontFamily="{TemplateBinding FontFamily}"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            Margin="{TemplateBinding Padding}"
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsEnabled" Value="False">
+                                            <Setter Property="Foreground" Value="LightGray"></Setter>
+                                        </Trigger>
+                                    </Style.Triggers>
+
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Border>
+
+                </ControlTemplate>
+
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Icon button-->
+    <Style x:Key="IconButton" TargetType="{x:Type Button}">
+        <Setter Property="Foreground" Value="DarkGray" />
+        <Setter Property="Background" Value="{StaticResource WordTransparentBlueBrush}"></Setter>
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="FontFamily" Value="{StaticResource FontAwesome}"></Setter>
+        <Setter Property="Margin" Value="0 0 0 0"></Setter>
+        <Setter Property="Padding" Value="5"></Setter>
+        <Setter Property="Width" Value="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"></Setter>
+
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ButtonBase}">
+                    <Border x:Name="border"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Background="{TemplateBinding Background}"
+                            SnapsToDevicePixels="True">
+
+                        <Grid>
+                            <Viewbox>
+                                <TextBlock 
+                                          Text="{TemplateBinding Content}"
+                                          Focusable="False"
+                                          FontFamily="{TemplateBinding FontFamily}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          Margin="{TemplateBinding Padding}"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                </TextBlock>
+                            </Viewbox>
+
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <EventTrigger RoutedEvent="MouseEnter">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation To="{StaticResource WordDarkBlue}"
+                                                    Duration="0:0:.3"
+                                                    Storyboard.TargetName="border"
+                                                    Storyboard.TargetProperty="(TextBox.Foreground).(SolidColorBrush.Color)" />
+                                </Storyboard>
+
+                            </BeginStoryboard>
+                        </EventTrigger>
+
+                        <EventTrigger RoutedEvent="MouseLeave">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation To="DarkGray"
+                                                    Duration="0:0:.3"
+                                                    Storyboard.TargetName="border"
+                                                    Storyboard.TargetProperty="(TextBox.Foreground).(SolidColorBrush.Color)" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Icon Cog button-->
+    <Style x:Key="IconCogButton" TargetType="{x:Type Button}">
+        <Setter Property="Foreground" Value="DarkGray" />
+        <Setter Property="Background" Value="{StaticResource WordTransparentBlueBrush}"></Setter>
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="FontFamily" Value="{StaticResource FontAwesome}"></Setter>
+        <Setter Property="Margin" Value="0 0 0 0"></Setter>
+        <Setter Property="Padding" Value="5"></Setter>
+        <Setter Property="Width" Value="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"></Setter>
+
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ButtonBase}">
+                    <Border x:Name="border"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Background="{TemplateBinding Background}"
+                            SnapsToDevicePixels="True">
+
+                        <Grid>
+                            <Viewbox>
+                                <TextBlock 
+                                    Text="{TemplateBinding Content}"
+                                   Focusable="False"
+                                   FontSize="10"
+                                   FontFamily="{TemplateBinding FontFamily}"
+                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                   Margin="{TemplateBinding Padding}"
+                                   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                </TextBlock>
+                            </Viewbox>
+
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <EventTrigger RoutedEvent="MouseEnter">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation To="DarkGray"
+                                                    Duration="0:0:.3"
+                                                    Storyboard.TargetName="border"
+                                                    Storyboard.TargetProperty="(TextBox.Foreground).(SolidColorBrush.Color)" />
+                                </Storyboard>
+                                
+                            </BeginStoryboard>
+                        </EventTrigger>
+
+                        <EventTrigger RoutedEvent="MouseLeave">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation To="{StaticResource WordDarkBlue}"
+                                                    Duration="0:0:.3"
+                                                    Storyboard.TargetName="border"
+                                                    Storyboard.TargetProperty="(TextBox.Foreground).(SolidColorBrush.Color)" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Button that animates foreground color on hover-->
+    <Style x:Key="ForegroundHoverIconButton" TargetType="{x:Type Button}">
+        <Setter Property="Foreground" Value="{StaticResource WhiteColorBrush}" />
+        <Setter Property="Background" Value="{StaticResource WordTransparentBlueBrush}"></Setter>
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="FontFamily" Value="{StaticResource FontAwesome}"></Setter>
+        <Setter Property="Margin" Value="0 0 0 0"></Setter>
+        <Setter Property="Padding" Value="5"></Setter>
+        <Setter Property="Width" Value="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"></Setter>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ButtonBase}">
+                    <Border x:Name="border"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Background="{TemplateBinding Background}"
+                            SnapsToDevicePixels="True">
+
+                        <Grid>
+                            <Viewbox>
+                                <TextBlock 
+                                    Text="{TemplateBinding Content}"
+                                    x:Name="text"
+                                   Focusable="False"
+                                   FontSize="{TemplateBinding FontSize}"
+                                   FontFamily="{TemplateBinding FontFamily}"
+                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                   Margin="{TemplateBinding Padding}"
+                                   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                </TextBlock>
+                            </Viewbox>
+
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <EventTrigger RoutedEvent="MouseEnter">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation
+                                        To="{StaticResource WordDarkBlue}"
+                                        Storyboard.TargetProperty="(TextBox.Foreground).(SolidColorBrush.Color)"
+                                        Storyboard.TargetName="text"
+                                         Duration="0:0:0.1"></ColorAnimation>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+
+                        <EventTrigger RoutedEvent="MouseLeave">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation
+                                        To="Black" 
+                                        Storyboard.TargetName="text"
+                                        Storyboard.TargetProperty="(TextBox.Foreground).(SolidColorBrush.Color)"
+                                        Duration="0:0:0.1"></ColorAnimation>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="EmojiIconButton" TargetType="{x:Type Button}">
+        <Setter Property="Foreground" Value="{StaticResource WhiteColorBrush}" />
+        <Setter Property="Background" Value="{StaticResource WordTransparentBlueBrush}"></Setter>
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="FontFamily" Value="{StaticResource FontAwesome}"></Setter>
+        <Setter Property="Margin" Value="0 0 0 0"></Setter>
+        <Setter Property="Padding" Value="5"></Setter>
+        <Setter Property="Width" Value="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"></Setter>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ButtonBase}">
+                    <Border x:Name="border"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Background="{TemplateBinding Background}"
+                            SnapsToDevicePixels="True">
+
+                        <Grid>
+                            <Viewbox>
+                                <TextBlock 
+                                    Text="{TemplateBinding Content}"
+                                    x:Name="text"
+                                   Focusable="False"
+                                   FontSize="{TemplateBinding FontSize}"
+                                   FontFamily="{TemplateBinding FontFamily}"
+                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                   Margin="{TemplateBinding Padding}"
+                                   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                </TextBlock>
+                            </Viewbox>
+
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <EventTrigger RoutedEvent="MouseEnter">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation
+                                        To="{StaticResource WordDarkBlue}"
+                                        Storyboard.TargetProperty="(TextBox.Foreground).(SolidColorBrush.Color)"
+                                        Storyboard.TargetName="text"
+                                         Duration="0:0:0.1"></ColorAnimation>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+
+                        <EventTrigger RoutedEvent="MouseLeave">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation
+                                        To="{StaticResource WordOrange}" 
+                                        Storyboard.TargetName="text"
+                                        Storyboard.TargetProperty="(TextBox.Foreground).(SolidColorBrush.Color)"
+                                        Duration="0:0:0.1"></ColorAnimation>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Icon button that grows on hover -->
+    <Style x:Key="IconGrowButton" TargetType="{x:Type Button}">
+        <Setter Property="Foreground" Value="{StaticResource WhiteColorBrush}" />
+        <Setter Property="Background" Value="{StaticResource WordTransparentBlueBrush}"></Setter>
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="FontFamily" Value="{StaticResource FontAwesome}"></Setter>
+        <Setter Property="Margin" Value="0 0 0 0"></Setter>
+        <Setter Property="Padding" Value="5"></Setter>
+        <Setter Property="Width" Value="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"></Setter>
+
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ButtonBase}">
+                    <Border x:Name="border"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Background="{TemplateBinding Background}"
+                            SnapsToDevicePixels="True">
+
+                        <!-- Add a render scale transform -->
+                        <Border.RenderTransform>
+                            <ScaleTransform></ScaleTransform>
+                        </Border.RenderTransform>
+
+                        <Border.RenderTransformOrigin>
+                            <Point X="0.5" Y="0.5"></Point>
+                        </Border.RenderTransformOrigin>
+                        
+                        <Grid>
+                            <Viewbox>
+                                <TextBlock 
+                                    Text="{TemplateBinding Content}"
+                                   Focusable="False"
+                                   FontSize="10"
+                                   FontFamily="{TemplateBinding FontFamily}"
+                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                   Margin="{TemplateBinding Padding}"
+                                   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                </TextBlock>
+                            </Viewbox>
+
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <EventTrigger RoutedEvent="MouseEnter">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation To="1.25"
+                                                    Duration="0:0:.2"
+                                                    Storyboard.TargetName="border"
+                                                    Storyboard.TargetProperty="(RenderTransform).(ScaleTransform.ScaleX)" />
+                                    <DoubleAnimation To="1.25"
+                                                    Duration="0:0:.2"
+                                                    Storyboard.TargetName="border"
+                                                    Storyboard.TargetProperty="(RenderTransform).(ScaleTransform.ScaleY)" />
+                                </Storyboard>
+
+                            </BeginStoryboard>
+                        </EventTrigger>
+
+                        <EventTrigger RoutedEvent="MouseLeave">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation To="1"
+                                                    Duration="0:0:.3"
+                                                    Storyboard.TargetName="border"
+                                                    Storyboard.TargetProperty="(RenderTransform).(ScaleTransform.ScaleX)" />
+                                    <DoubleAnimation To="1"
+                                                    Duration="0:0:.3"
+                                                    Storyboard.TargetName="border"
+                                                    Storyboard.TargetProperty="(RenderTransform).(ScaleTransform.ScaleY)" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>
